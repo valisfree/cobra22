@@ -1,3 +1,15 @@
+#!/usr/bin/env python3 
+
+# -*- coding: utf-8 -*-
+#-------------------------------------------------------------------------------
+# Name:        cobra22
+# Created:     25.09.2018
+# Version:     1.0
+# Copyright:   (c) 2018, Vale_Phtor, valisfree@yandex.ru
+# Licence:     Apache License version 2.0
+#-------------------------------------------------------------------------------
+
+
 import time
 
 time_for_punctuation = 0.12
