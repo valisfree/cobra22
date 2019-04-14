@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+# Start project April 10, 2019
+# valisfree@yandex.ru
+
+import sys
+
+class BooksDataBase():
+    """ Create books database. Check books in db.
+    Add books, and save new position.
+    """
+    def __init__():
+        pass
+    def create_dbd():
+        pass
+    def chek_book():
+        pass
+    def add_book():
+        pass
+    def save_book():
+        pass
+
+class Book():
+    """ Take file location. Check and read file to list words.
+    Change number position of list. Give next word.
+    """
+    def __init__():
+        pass
+    def check_file_name():
+        pass
+    def check_book_encoding():
+        pass
+    def next_word():
+        pass
+
+class DelayTimer():
+    """ Take word. Evaluate and apply delay time.
+    """
+    def __init__():
+        pass
+
+class ProgramSettings():
+    """ Add settings file. Read and give values.
+    """
+    def __init__():
+        pass
+
+class Stream():
+    """ Class realize program logic. Start\stop, hotkeys.
+    """
+    def __init__():
+        pass
+
+class Messages():
+    """ Print all text for users
+    """
+    def __init__():
+        pass
+
+parameters = sys.argv
+print(parameters)
