@@ -4,13 +4,15 @@
 
 import sys
 
+import os # for clearing terminal
+
 class BooksDataBase():
     """ Create books database. Check books in db.
     Add books, and save new position.
     """
     def __init__():
         pass
-    def create_dbd():
+    def create_bdb():
         pass
     def chek_book():
         pass
@@ -23,15 +25,44 @@ class Book():
     """ Take file location. Check and read file to list words.
     Change number position of list. Give next word.
     """
-    def __init__():
-        pass
-    def check_file_name():
-        pass
-    def check_book_encoding():
-        pass
-    def next_word():
-        pass
+    def __init__(self, adress, speed=300, cursor=0):
+        self.adress = adress
+        self.book = []
+        self.speed = speed
+        self.cursor = cursor
+    def _check_file_name(self):
+        """ Check file for aviability and ' .txt' ends."""
+        flag = 0
+        if self.adress.endswith('.txt'):
+            flag += 1
+        try:
+            check_aviability = open(self.adress)
+        except IOError as e:
+            pass
+        else:
+            check_aviability.close()
+            flag += 1
+        if flag == 2:
+            return True
+        return False
+    def load_book(self):
+        ''' Load book to list self.book.'''
+        if _check_file_name(self.adress):
+            with open(self.adress) as book:
+                self.book = book.read()
+            return True
+        return False
 
+    def _check_book_encoding():
+        pass
+    def next_word(self):
+        ''' Return next word. Increases cursor by one.
+        Verifies that the cursor does not go beyond the book.
+        '''
+        if self.cursor + 1 > len(self.book):
+            return False
+        self.cursor += 1
+        return self.book[self.cursor]
 class DelayTimer():
     """ Take word. Evaluate and apply delay time.
     """
@@ -49,12 +80,35 @@ class Stream():
     """
     def __init__():
         pass
+class ViewerTerminal:
+    def __init__(self):
+        # self.book = Book()
+        self.mesages = MessagesTerminal()
+        # self.hotkeys = HotkeysTerminal()
+        self.argv_param = sys.argv
+    def _clear_terminal(self):
+        os.system('clear')
+    def start_view(self):
+        if len(self.argv_param) > 1:
+            self.mesages.argv_take_book_adress(self.argv_param[1])
 
-class Messages():
+
+
+class MessagesTerminal:
     """ Print all text for users
     """
+    def __init__(self):
+        pass
+    def book_not_found(self):
+        print("File not found.")
+    def hello_message(self):
+        print("Cobra22 is reading.")
+    def argv_take_book_adress(self, adress):
+        ''' Take filename and print that.'''
+        print('Book {} is here.'.format(adress))
+class HotkeysTerminal:
     def __init__():
         pass
 
-parameters = sys.argv
-print(parameters)
+cobra22 = ViewerTerminal()
+cobra22.start_view()
