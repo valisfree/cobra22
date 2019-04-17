@@ -80,17 +80,62 @@ class Stream():
     """
     def __init__():
         pass
+class CheckArgs:
+    ''' Coming later '''
+    def __init__(self, argv):
+        self.argv = argv
+        self.len_arg = len(self.argv)
+    def all_checks():
+        if self.len_arg == 1:
+            return False # until sometime
+        if self.len_arg == 2:
+            self.adress = self.argv[1]
+            if check_adress():
+                return self.adress
+            else:
+                return False
+        if self.len_arg == 3:
+            check_curspeed()
+        if self.len.arg == 4:
+            check_curspeed()
+        if self.len_arg > 4:
+            return False
+    def check_adress(self):
+        if self.adress.endswith('.txt'):
+            return True
+        return False
+
+
 class ViewerTerminal:
+    ''' Class for view program at the terminal.
+    Start flags:
+        s=XXX, where XXX - speed at the words per minuts.
+            Sample: s=450
+        c=XXX, where XXX - cursor position word at the file.
+            Sample: c=124
+    Full sample: python3 cobra22 book.txt s=450 c=15
+    Note: If you do not specify flags, they use default values s=300 c=0.
+    You can change default values at the config file.
+        '''
     def __init__(self):
         # self.book = Book()
         self.mesages = MessagesTerminal()
-        # self.hotkeys = HotkeysTerminal()
+        self.hotkeys = HotkeysTerminal()
         self.argv_param = sys.argv
     def _clear_terminal(self):
+        ''' Built-in function for clearing terminal. '''
         os.system('clear')
-    def start_view(self):
+    def _check_argv(self):
+        ''' A little check '''
         if len(self.argv_param) > 1:
-            self.mesages.argv_take_book_adress(self.argv_param[1])
+            return True
+        return False
+    def start_view(self):
+        ''' '''
+        # ViewerTerminal()._clear_terminal()
+       if ViewerTerminal()._check_argv():
+            print(self.argv_param)
+            # self.mesages.argv_take_book_adress(self.argv_param[1])
 
 
 
@@ -107,7 +152,7 @@ class MessagesTerminal:
         ''' Take filename and print that.'''
         print('Book {} is here.'.format(adress))
 class HotkeysTerminal:
-    def __init__():
+    def __init__(self):
         pass
 
 cobra22 = ViewerTerminal()
