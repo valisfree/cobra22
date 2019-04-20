@@ -85,27 +85,48 @@ class CheckArgs:
     def __init__(self, argv):
         self.argv = argv
         self.len_arg = len(self.argv)
-    def all_checks():
+        # Bellow the data will be taken from the settings file
+        self.speed_marker = ['s=', 'S=']
+        self.speed_min = 50
+        self.speed_max = 1500
+        self.cursor_marker = ['c=', 'C=']
+        self.cursor_min = 0
+    def all_checks(self):
+        ''' Checks by pattern: name.txt s=55 c=2'''
+        self.out_list = []
         if self.len_arg == 1:
             return False # until sometime
-        if self.len_arg == 2:
-            self.adress = self.argv[1]
-            if check_adress():
-                return self.adress
-            else:
-                return False
-        if self.len_arg == 3:
-            check_curspeed()
-        if self.len.arg == 4:
-            check_curspeed()
+        self.adress = self.argv[1]
+        if self.check_adress_txt():
+            self.out_list.append(self.adress)
+        else:
+            return False
+        if self.len_arg <= 3:
+            if self.check_speed():
+                self.out_list.append(self.speed)
+        if self.len_arg == 4:
+            if check_cursor():
+                self.out_list.append(self.cursor)
         if self.len_arg > 4:
             return False
-    def check_adress(self):
+        return self.out_list
+    def check_adress_txt(self):
         if self.adress.endswith('.txt'):
             return True
         return False
-
-
+    def check_speed(self):
+        self.raw_speed = self.argv[2]
+        if len(self.raw_speed) < 4:
+            return False
+        self.raw_speed_maker = self.raw_speed[:2]
+        if self.raw_speed_maker in self.speed_marker:
+            self.raw_speed_number = self.raw_speed[2:]
+            if self.raw_speed_number.isdigit():
+                if self.speed_min <= int(self.raw_speed_number):
+                    if int(self.raw_speed_number) <= self.speed_max:
+                        self.speed = int(self.raw_speed_number)
+                        return True
+        return False
 class ViewerTerminal:
     ''' Class for view program at the terminal.
     Start flags:
@@ -128,29 +149,39 @@ class ViewerTerminal:
     def _check_argv(self):
         ''' A little check '''
         if len(self.argv_param) > 1:
-            return True
+            self.item = CheckArgs(self.argv_param)
+            self.out_list = self.item.all_checks()
+            if self.out_list:
+                return self.out_list
         return False
     def start_view(self):
         ''' '''
-        # ViewerTerminal()._clear_terminal()
-       if ViewerTerminal()._check_argv():
-            print(self.argv_param)
-            # self.mesages.argv_take_book_adress(self.argv_param[1])
+        ViewerTerminal()._clear_terminal()
+        self.out_list = self._check_argv()
+        if self.out_list:
+            self.mesages.argv_is_ok(self.out_list)
+            return
+        self.mesages.no_argv()
 
 
 
 class MessagesTerminal:
     """ Print all text for users
     """
+    '''
     def __init__(self):
         pass
+    '''
+    def no_argv(self):
+        print("The required parameters are not set. Example:")
+        print("python3 cobra22 text.txt s=300 c=5")
     def book_not_found(self):
         print("File not found.")
     def hello_message(self):
         print("Cobra22 is reading.")
-    def argv_take_book_adress(self, adress):
+    def argv_is_ok(self, items):
         ''' Take filename and print that.'''
-        print('Book {} is here.'.format(adress))
+        print(items)
 class HotkeysTerminal:
     def __init__(self):
         pass
