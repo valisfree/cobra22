@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-# Start project April 10, 2019
-# valisfree@yandex.ru
+''' This is program for fast reading, core for GUI.
+    Project started an April 10, 2019.
+'''
+
+__author__ = 'Valentin Dubovitskiy'
+__date__ = 'Apr 23, 2019'
+__contact__ = 'valisfree@yandex.ru'
+__version__ = '0.1.0'
 
 import sys
-
 import os # for clearing terminal
 
 class BooksDataBase():
@@ -27,29 +32,30 @@ class Book():
     """
     def __init__(self, adress, speed=300, cursor=0):
         self.adress = adress
-        self.book = []
         self.speed = speed
         self.cursor = cursor
+        self.book = []
     def _check_file_name(self):
         """ Check file for aviability and ' .txt' ends."""
         flag = 0
         if self.adress.endswith('.txt'):
             flag += 1
         try:
-            check_aviability = open(self.adress)
+            self.heck_aviability = open(self.adress)
         except IOError as e:
             pass
         else:
-            check_aviability.close()
+            self.heck_aviability.close()
             flag += 1
         if flag == 2:
             return True
         return False
     def load_book(self):
         ''' Load book to list self.book.'''
-        if _check_file_name(self.adress):
+        if self._check_file_name():
             with open(self.adress) as book:
-                self.book = book.read()
+                self.book = book.read().split()
+            print(self.book)
             return True
         return False
 
@@ -80,6 +86,7 @@ class Stream():
     """
     def __init__():
         pass
+
 class CheckArgs:
     ''' Coming later '''
     def __init__(self, argv):
@@ -92,7 +99,9 @@ class CheckArgs:
         self.cursor_marker = ['c=', 'C=']
         self.cursor_min = 0
     def all_checks(self):
-        ''' Checks by pattern: name.txt s=55 c=2'''
+        ''' Checks by pattern: name.txt s=55 c=2.
+        Return list ['text.txt', 55, 2]
+        '''
         self.out_list = []
         if self.len_arg == 1:
             return False # until sometime
@@ -101,20 +110,22 @@ class CheckArgs:
             self.out_list.append(self.adress)
         else:
             return False
-        if self.len_arg <= 3:
+        if self.len_arg >= 3:
             if self.check_speed():
                 self.out_list.append(self.speed)
         if self.len_arg == 4:
-            if check_cursor():
+            if self.check_cursor():
                 self.out_list.append(self.cursor)
         if self.len_arg > 4:
             return False
         return self.out_list
     def check_adress_txt(self):
+        ''' Check ending '.txt' '''
         if self.adress.endswith('.txt'):
             return True
         return False
     def check_speed(self):
+        ''' Check pattern s=xxx '''
         self.raw_speed = self.argv[2]
         if len(self.raw_speed) < 4:
             return False
@@ -127,6 +138,40 @@ class CheckArgs:
                         self.speed = int(self.raw_speed_number)
                         return True
         return False
+    def check_cursor(self):
+        ''' Check pattern c=xxx '''
+        self.raw_cursor = self.argv[3]
+        if len(self.raw_cursor) < 3:
+            return False
+        self.raw_cursor_marker = self.raw_cursor[:2]
+        if self.raw_cursor_marker not in self.cursor_marker:
+            return false
+        self.raw_cursor_number = self.raw_cursor[2:]
+        if self.raw_cursor_number.isdigit():
+            if int(self.raw_cursor_number) >= self.cursor_min:
+                self.cursor = int(self.raw_cursor_number)
+                return True
+        return False
+class MessagesTerminal:
+    """ Print all text for users
+    """
+    '''
+    def __init__(self):
+        pass
+    '''
+    def no_argv(self):
+        print("The required parameters are not set. Example:")
+        print("python3 cobra22 text.txt s=300 c=5")
+    def book_not_found(self):
+        print("File not found.")
+    def hello_message(self):
+        print("Cobra22 is reading.")
+    def argv_is_ok(self, items):
+        ''' Take filename and print that.'''
+        print('book is loaded')
+class HotkeysTerminal:
+    def __init__(self):
+        pass
 class ViewerTerminal:
     ''' Class for view program at the terminal.
     Start flags:
@@ -139,7 +184,6 @@ class ViewerTerminal:
     You can change default values at the config file.
         '''
     def __init__(self):
-        # self.book = Book()
         self.mesages = MessagesTerminal()
         self.hotkeys = HotkeysTerminal()
         self.argv_param = sys.argv
@@ -160,31 +204,17 @@ class ViewerTerminal:
         self.out_list = self._check_argv()
         if self.out_list:
             self.mesages.argv_is_ok(self.out_list)
-            return
-        self.mesages.no_argv()
+        else:
+            self.mesages.no_argv()
+            exit()
+        self.good_book = Book(*self.out_list)
+        self.good_book.load_book()
+        
 
 
+def main():
+    cobra22 = ViewerTerminal()
+    cobra22.start_view()
 
-class MessagesTerminal:
-    """ Print all text for users
-    """
-    '''
-    def __init__(self):
-        pass
-    '''
-    def no_argv(self):
-        print("The required parameters are not set. Example:")
-        print("python3 cobra22 text.txt s=300 c=5")
-    def book_not_found(self):
-        print("File not found.")
-    def hello_message(self):
-        print("Cobra22 is reading.")
-    def argv_is_ok(self, items):
-        ''' Take filename and print that.'''
-        print(items)
-class HotkeysTerminal:
-    def __init__(self):
-        pass
-
-cobra22 = ViewerTerminal()
-cobra22.start_view()
+if __name__ == '__main__':
+    main()
